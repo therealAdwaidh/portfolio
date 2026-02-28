@@ -870,7 +870,7 @@
             .hero-name {
                 white-space: normal;
                 word-wrap: break-word;
-                font-size: clamp(3rem, 10vw, 4rem);
+                font-size: clamp(2.3rem, 10vw, 4rem);
             }
 
             .hero-subtitle {
@@ -1183,15 +1183,17 @@
                 </div>
             </div>
 
-            <div class="project-card" id="pc1">
+            <div class="project-card" id="pc1" onclick="window.location.href='media-generation-platform.html';"
+                style="cursor: pointer;">
                 <p class="card-num">02</p>
-                <h3 class="card-title">GenAI Image Pipeline</h3>
-                <p class="card-desc">An end-to-end image generation and transformation pipeline using diffusion models,
-                    with a Next.js frontend for real-time previews.</p>
+                <h3 class="card-title">The AI-Powered
+                    Media Generation Platform</h3>
+                <p class="card-desc">Design characters, scenes, and cinematic shots using the latest video and image
+                    models. Build your visual universe from scratch or remix community assets.</p>
                 <div class="tag-row">
-                    <span class="tag">Python</span><span class="tag">Next.js</span><span class="tag">Diffusion</span>
+                    <span class="tag">Genai</span><span class="tag">Next.js</span><span class="tag">AWS S3</span>
                 </div>
-                <a href="#" class="card-link">VIEW PROJECT ➔</a>
+                <a href="media-generation-platform.html" class="card-link">VIEW PROJECT ➔</a>
             </div>
 
             <div class="project-card" id="pc2">
@@ -1266,7 +1268,17 @@
             <h2 class="contact-heading">Got an idea?<br /><span>Let's build it.</span></h2>
             <p class="contact-sub">I'm always open to new projects, collaborations, and interesting conversations about
                 AI.</p>
-            <a href="mailto:adwaidhcke2@gmail.com" class="email-pill">✉ adwaidhcke2@gmail.com</a>
+            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 1rem;">
+                <a href="mailto:adwaidhcke2@gmail.com" class="email-pill">✉ adwaidhcke2@gmail.com</a>
+                <a href="https://www.linkedin.com/in/adwaidh-g-56a970242/" target="_blank" rel="noopener noreferrer"
+                    class="email-pill">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                            d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
+                    </svg>
+                    LinkedIn
+                </a>
+            </div>
         </div>
     </section>
 
