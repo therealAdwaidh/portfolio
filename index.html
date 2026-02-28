@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
     <title>Adwaidh — Aspiring AI Developer</title>
     <link
         href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:ital,wght@0,300;0,400;1,300&display=swap"
@@ -495,7 +496,7 @@
         .projects-grid:hover .project-card {
             opacity: 0.5;
             /* Dim all cards silently when the grid is hovered */
-            filter: blur(2px);
+            filter: blur(0.5px);
             /* Slight blur to non-hovered for extra focus */
             transform: scale(0.98);
         }
@@ -1196,12 +1197,16 @@
                 <a href="media-generation-platform" class="card-link">VIEW PROJECT ➔</a>
             </div>
 
-            <div class="project-card" id="pc2">
+            <div class="project-card" id="pc2" onclick="window.location.href='visual-engine-prompt-generator.html';"
+                style="cursor: pointer;">
                 <p class="card-num">03</p>
                 <h3 class="card-title">Visuals Engine – Ad Creative AI</h3>
-                <p class="card-desc">This software is a "Visuals Engine" Prompt Generator designed specifically to help users craft high-quality, deterministic prompts and generate AI images, targeted largely at Ad Creative and Marketing use cases.</p>
+                <p class="card-desc">This software is a "Visuals Engine" Prompt Generator designed specifically to help
+                    users craft high-quality, deterministic prompts and generate AI images, targeted largely at Ad
+                    Creative and Marketing use cases.</p>
                 <div class="tag-row">
-                    <span class="tag">React</span><span class="tag">Node.js</span><span class="tag">Pollinations AI</span>
+                    <span class="tag">React</span><span class="tag">Node.js</span><span class="tag">Pollinations
+                        AI</span>
                 </div>
                 <a href="visual-engine-prompt-generator.html" class="card-link">VIEW PROJECT ➔</a>
             </div>
