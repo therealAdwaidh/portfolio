@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <title>RideAlong — Travel Companion Finder | Adwaidh</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:ital,wght@0,300;0,400;1,300&display=swap"
+        rel="stylesheet" />
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --ink: #0D0E12;
+            --accent: #E11D48;
+            --accent2: #FB923C;
+            --text: #F7F6F2;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Syne', sans-serif;
+            background: var(--ink);
+            color: var(--text);
+            overflow-x: hidden;
+        }
+
+        /* ── CUSTOM SCROLLBAR ── */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--ink);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--accent);
+            border-radius: 4px;
+        }
+
+        /* ── NAV ── */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 200;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1.5rem 3rem;
+            background: rgba(13, 14, 18, 0.1);
+            backdrop-filter: blur(8px);
+        }
+
+        .nav-logo-wrap {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            background: #fff;
+            color: var(--ink);
+            border-radius: 4px;
+            text-decoration: none;
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: 1.2rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            align-items: center;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+        }
+
+        .nav-link {
+            font-family: 'Syne', sans-serif;
+            font-size: .8rem;
+            font-weight: 700;
+            letter-spacing: .05em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: color .2s;
+        }
+
+        .nav-link:hover {
+            color: #fff;
+        }
+
+        /* ── HERO ── */
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 25vh;
+            padding-bottom: 15vh;
+        }
+
+        .hero2 {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-bottom: 15vh;
+        }
+
+        .hero-bg-text {
+            position: absolute;
+            top: 22vh;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: clamp(4rem, 16vw, 4rem);
+            font-weight: 800;
+            color: rgba(255, 255, 255, 0.95);
+            white-space: nowrap;
+            z-index: 1;
+            letter-spacing: -0.01em;
+            line-height: 1;
+        }
+
+        .hero-img-container {
+            position: relative;
+            z-index: 2;
+            width: 80%;
+            max-width: 1000px;
+            margin-top: 5vh;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 40px 100px rgba(0, 0, 0, 0.5), 0 0 100px rgba(129, 140, 248, 0.25);
+            opacity: 0;
+            transform: translateY(60px);
+            animation: floatUp 1.2s 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            background: #1a1a24;
+        }
+
+        .hero-img-container img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 20px;
+            transition: transform 0.6s ease;
+        }
+
+        .hero-img-container:hover img {
+            transform: scale(1.02);
+        }
+
+        @keyframes floatUp {
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero {
+                min-height: 63vh;
+            }
+
+            .hero2 {
+                min-height: 63vh;
+            }
+
+            .hero-bg-text {
+                top: 17vh;
+                font-size: 1.6rem;
+                white-space: normal;
+                text-align: center;
+                width: 90%;
+            }
+
+            .hero-img-container {
+                width: 95%;
+                margin-top: 4vh;
+            }
+
+            .hero:not(:first-of-type) {
+                padding-top: 8vh;
+                min-height: auto;
+            }
+
+            nav {
+                padding: 1rem 1.5rem;
+            }
+        }
+
+        /* Ambient glows behind text */
+        .ambient-glow {
+            position: absolute;
+            top: 20%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80vw;
+            height: 60vw;
+            background: radial-gradient(circle, rgba(67, 56, 202, 0.15) 0%, transparent 60%);
+            z-index: 0;
+            pointer-events: none;
+            filter: blur(60px);
+        }
+
+        /* ── PROJECT INFO ── */
+        .project-info {
+            padding: 6rem 3rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: start;
+            /* Match the slight contrast from the image */
+            background: #0B0C10;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            padding-right: 2rem;
+        }
+
+        .info-item .info-label {
+            font-family: 'Syne', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #FFFFFF;
+            margin-bottom: 0.8rem;
+        }
+
+        .info-item .info-val {
+            font-family: 'Syne', sans-serif;
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.75);
+            line-height: 1.6;
+        }
+
+        .info-desc {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.15rem;
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        @media (max-width: 960px) {
+            .project-info {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+                padding: 4rem 1.5rem;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+                padding-right: 0;
+            }
+        }
+
+        /* ── APP SCREENS ── */
+        .app-screens {
+            padding: 2rem 3rem 6rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 3rem;
+            align-items: stretch;
+            background: #0B0C10;
+        }
+
+        .screen-wrap {
+            position: relative;
+            border-radius: 40px;
+            overflow: hidden;
+            border: 8px solid #1c1d24;
+            /* Device bezel */
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+            background: #1c1d24;
+            display: flex;
+            align-items: center;
+        }
+
+        .screen-wrap img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 32px;
+            /* inner rounding */
+            transition: transform 0.4s ease;
+        }
+
+        .screen-wrap:hover img {
+            transform: scale(1.02);
+        }
+
+        @media (max-width: 960px) {
+            .app-screens {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+                max-width: 440px;
+                padding: 2rem 1.5rem 4rem;
+            }
+        }
+
+        /* ── ARTICLE SEC ── */
+        .article-sec {
+            padding: 4rem 3rem 6rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: start;
+            background: #0B0C10;
+        }
+
+        .article-content {
+            grid-column: 2;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .article-heading {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #FFFFFF;
+            margin-bottom: 0.5rem;
+        }
+
+        .article-text {
+            font-family: 'Syne', sans-serif;
+            font-size: 1rem;
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.75);
+        }
+
+        @media (max-width: 960px) {
+            .article-sec {
+                grid-template-columns: 1fr;
+                padding: 2rem 1.5rem 4rem;
+            }
+
+            .article-sec>div:first-child {
+                display: none;
+            }
+
+            .article-content {
+                grid-column: 1;
+            }
+        }
+
+        /* ── DETAILED OVERVIEW ── */
+        .detailed-overview {
+            padding: 6rem 3rem 8rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            background: #0B0C10;
+            color: #FFFFFF;
+        }
+
+        .do-grid {
+            display: grid;
+            grid-template-columns: 1fr 2.5fr;
+            gap: 4rem;
+            align-items: start;
+        }
+
+        .do-sidebar-title {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.6rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #FFFFFF;
+            position: sticky;
+            top: 120px;
+        }
+
+        .do-main {
+            display: flex;
+            flex-direction: column;
+            gap: 4rem;
+        }
+
+        .do-block {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .do-heading {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--accent2);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 0.8rem;
+        }
+
+        .do-text {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.05rem;
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.75);
+        }
+
+        .tech-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .tech-col h4 {
+            font-family: 'Syne', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #FFFFFF;
+            margin-bottom: 1rem;
+        }
+
+        .tech-col ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .tech-col li {
+            font-family: 'Syne', sans-serif;
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.65);
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .tech-col li::before {
+            content: "✦";
+            color: var(--accent);
+            font-size: 0.7rem;
+        }
+
+        .feature-list {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .feature-item {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 1.5rem;
+            border-radius: 12px;
+            transition: transform 0.2s, background 0.2s;
+        }
+
+        .feature-item:hover {
+            transform: translateY(-4px);
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(129, 140, 248, 0.3);
+        }
+
+        .feature-title {
+            font-family: 'Syne', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            color: #FFFFFF;
+            margin-bottom: 0.5rem;
+        }
+
+        .feature-desc {
+            font-family: 'Syne', sans-serif;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        @media (max-width: 960px) {
+            .detailed-overview {
+                padding: 4rem 1.5rem 6rem;
+            }
+
+            .do-grid {
+                grid-template-columns: 1fr;
+                gap: 2.5rem;
+            }
+
+            .do-sidebar-title {
+                position: relative;
+                top: 0;
+            }
+
+            .tech-grid,
+            .feature-list {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <a href="/" class="nav-logo-wrap">A</a>
+        <div class="nav-links">
+            <a href="/#about" class="nav-link">About Me</a>
+            <a href="/#projects" class="nav-link">Work</a>
+            <a href="/#contact" class="nav-link">Contact</a>
+        </div>
+    </nav>
+
+    <div class="ambient-glow"></div>
+
+    <section class="hero">
+        <div class="hero-bg-text">RIDEALONG</div>
+        <div class="hero-img-container">
+            <img src="image/ride/image.png" alt="RideAlong App Mockup" />
+        </div>
+
+    </section>
+
+
+    <!-- Detailed Overview Section -->
+    <section class="detailed-overview">
+
+
+        <div class="do-grid">
+
+
+            <div class="do-sidebar">
+                <h2 class="do-sidebar-title">Project Deep Dive</h2>
+
+            </div>
+
+            <div class="do-main">
+                <div class="do-block">
+
+                    <h3 class="do-heading">Overview</h3>
+                    <p class="do-text">
+                        RideAlong is a full-stack, real-time travel ridesharing platform where users can find companions
+                        for trips on two wheels or four. The tagline says it all: <em>"Never Travel Alone Again."</em>
+                        <br><br>
+                        Users post upcoming trips (by bike or car), others browse a public feed, express interest in
+                        joining, and once accepted — they can chat in real-time to coordinate. The platform combines a
+                        social discovery layer with instant messaging, powered by Supabase Realtime and web push
+                        notifications.
+                    </p>
+
+                    <div style="margin-top: 1.5rem;">
+                        <a href="https://ride-along-six.vercel.app/" target="_blank" rel="noopener noreferrer"
+                            style="display: inline-flex; align-items: center; gap: 0.8rem; background: rgba(225, 29, 72, 0.1); border: 1.5px solid var(--accent); padding: 0.8rem 2rem; border-radius: 100px; text-decoration: none; color: #fff; font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.95rem; transition: all 0.3s ease; box-shadow: 0 4px 20px rgba(225, 29, 72, 0.15);"
+                            onmouseover="this.style.background='var(--accent)'; this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 25px rgba(225, 29, 72, 0.3)';"
+                            onmouseout="this.style.background='rgba(225, 29, 72, 0.1)'; this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 20px rgba(225, 29, 72, 0.15)';">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                style="color: var(--accent2);">
+                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                <polyline points="15 3 21 3 21 9"></polyline>
+                                <line x1="10" y1="14" x2="21" y2="3"></line>
+                            </svg>
+                            Visit Live: RideAlong – Travel Companion Finder
+                        </a>
+                    </div>
+
+                </div>
+
+                <div class="do-block">
+                    <h3 class="do-heading">Technology Stack</h3>
+                    <div class="tech-grid">
+                        <div class="tech-col">
+                            <h4>Frontend</h4>
+                            <ul>
+                                <li><strong>Framework:</strong> Next.js 16 (App Router)</li>
+                                <li><strong>UI Library:</strong> React 19 + TypeScript</li>
+                                <li><strong>Styling:</strong> Tailwind CSS v4 (dark theme)</li>
+                                <li><strong>Hosting:</strong> Vercel</li>
+                            </ul>
+                        </div>
+                        <div class="tech-col">
+                            <h4>Backend & Infra</h4>
+                            <ul>
+                                <li><strong>Database:</strong> Supabase (PostgreSQL)</li>
+                                <li><strong>Auth:</strong> Supabase Auth</li>
+                                <li><strong>Realtime:</strong> Supabase Realtime</li>
+                                <li><strong>Push:</strong> Supabase Edge Functions</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </section>
+
+    <section class="hero2">
+
+        <div class="hero-img-container">
+            <img src="image/ride/img3.png" alt="RideAlong Trip Feed Mockup" />
+        </div>
+
+    </section>
+
+
+
+    <!-- Detailed Overview Section -->
+    <section class="detailed-overview">
+        <div class="do-grid">
+            <div class="do-sidebar">
+                <h2 class="do-sidebar-title">Project Deep Dive</h2>
+            </div>
+
+            <div class="do-main">
+
+
+                <div class="do-block">
+                    <h3 class="do-heading">Core Features &amp; Workflow</h3>
+                    <p class="do-text">
+                        RideAlong delivers a complete social travel experience — from identity to coordination — with
+                        five tightly integrated feature modules.
+                    </p>
+                    <div class="feature-list">
+                        <div class="feature-item">
+                            <h4 class="feature-title">Auth &amp; Profiles</h4>
+                            <p class="feature-desc">Email/password signup and login with full profile creation — name,
+                                avatar, bio, and vehicle type (bike or car) — powered by Supabase Auth.</p>
+                        </div>
+                        <div class="feature-item">
+                            <h4 class="feature-title">Trip Feed</h4>
+                            <p class="feature-desc">A public, browsable feed of all open trips showing destination,
+                                travel dates, vehicle type, and available seats. Users can create and manage their own
+                                trips.</p>
+                        </div>
+                        <div class="feature-item">
+                            <h4 class="feature-title">Interest System</h4>
+                            <p class="feature-desc">One request per trip per user. Trip owners accept or decline
+                                joiners, and trips auto-close once all seats are filled — keeping the feed always
+                                accurate.</p>
+                        </div>
+                        <div class="feature-item">
+                            <h4 class="feature-title">Real-time Chat</h4>
+                            <p class="feature-desc">Supabase Realtime-powered messaging channel that unlocks only after
+                                an interest request is accepted — keeping coordination contextual and secure.</p>
+                        </div>
+                        <div class="feature-item">
+                            <h4 class="feature-title">Push Notifications</h4>
+                            <p class="feature-desc">Supabase Edge Functions fire web push notifications for new interest
+                                requests, acceptances, and incoming chat messages — keeping users in the loop.</p>
+                        </div>
+                        <div class="feature-item">
+                            <h4 class="feature-title">Row Level Security</h4>
+                            <p class="feature-desc">Five PostgreSQL tables — profiles, trips, interests, messages, and
+                                push_subscriptions — each protected by Supabase RLS policies for fine-grained access
+                                control.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <section class="hero2">
+
+
+        <div class="hero-img-container">
+            <img src="image/ride/img4.png" alt="RideAlong Chat Interface Mockup" />
+        </div>
+
+    </section>
+
+
+    <!-- Detailed Overview Section -->
+    <section class="detailed-overview">
+        <div class="do-grid">
+            <div class="do-sidebar">
+                <h2 class="do-sidebar-title">Summary </h2>
+            </div>
+
+            <div class="do-main">
+
+
+                <div class="do-block">
+                    <h3 class="do-heading">Never Travel Alone Again</h3>
+                    <p class="do-text">
+                        RideAlong brings together the social spontaneity of travel with the reliability of structured
+                        coordination. By pairing a real-time trip feed with a gated chat system and push notifications,
+                        riders can discover companions, align on plans, and hit the road — all within a single, cohesive
+                        platform.
+                        <br><br>
+                        Built entirely on the Supabase ecosystem — from auth to database to edge functions — and
+                        deployed on Vercel, RideAlong is a showcase of what a modern, full-stack app looks like when
+                        every layer is purpose-built for real-time interaction.
+                    </p>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+</body>
+
+</html>
